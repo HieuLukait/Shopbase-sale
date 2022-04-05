@@ -22,8 +22,8 @@
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
-            <span v-if="col.name != 'product_image'"> {{ col.value }}</span>
-
+            <span v-if="col.name == 'domain'"></span>
+            <span v-else-if="col.name != 'product_image'"> {{ col.value }}</span>
             <q-avatar
               v-if="col.name == 'product_image'"
               size="100px"
@@ -32,6 +32,16 @@
             >
               <img :src="props.row.product_image" />
             </q-avatar>
+
+            <span v-if="col.name == 'domain'">
+              <a style="text-decoration: none;" :href="`${col.value}`">{{ col.value }}</a>
+            </span>
+
+            <!-- <div v-else-if="col.field === 'domain'">
+              <router-link style="text-decoration: none">
+                {{ col.value }}
+              </router-link>
+            </div> -->
           </q-td>
         </q-tr>
       </template>
@@ -54,12 +64,11 @@ const columns = [
   },
   {
     name: "domain",
-    align: "center",
-    label: "Domain",
+    align: "left",
+    label: "domain",
     field: "domain",
     sortable: true,
-    format: (val) => `${val}`,
-    // format: (val) => '<a href="">' + val + "</a>",
+    //   format: (val) => `${val}`,
   },
   {
     name: "product_title",
@@ -71,7 +80,7 @@ const columns = [
     name: "oder_created_at",
     label: "Oder created at",
     field: "oder_created_at",
-    align:"right",
+    align: "right",
     sortable: true,
     sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
   },

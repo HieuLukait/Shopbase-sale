@@ -77,7 +77,7 @@ export default {
 
 <style scoped>
 .topSale{
-    width:700px;
+    width:650px;
 }
 .recipe-units-table >>> .q-table__top{
   background-color:#33adff;
