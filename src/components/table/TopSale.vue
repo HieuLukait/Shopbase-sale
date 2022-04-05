@@ -3,6 +3,7 @@
     <div id="q-app">
       <div class="topSale q-pa-md">
         <q-table
+        class="recipe-units-table"
         title="TOP DOMAIN"
           :rows="rows"
           :columns="columns"
@@ -38,27 +39,27 @@ const columns = [
 const rows = [
   {
     name: "#1",
-    domain: "https://quasar.dev/vue-components",
+    domain: "https://www.hanoicomputer.vn/",
 
   },
   {
     name: "#2",
-    domain: "https://quasar.dev/vue-components",
+    domain: "https://www.anphatpc.com.vn/",
 
   },
   {
     name: "#3",
-    domain: "https://quasar.dev/vue-components",
+    domain: "https://memoryzone.com.vn/",
 
   },
   {
     name: "#4",
-    domain: "https://quasar.dev/vue-components",
+    domain: "	https://thanhcongcomputer.vn/",
 
   },
   {
     name: "#5",
-    domain: "https://quasar.dev/vue-components",
+    domain: "https://laptopk1.vn/",
 
   },
   
@@ -74,9 +75,13 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .topSale{
-    width:520px;
+    width:700px;
 }
+.recipe-units-table >>> .q-table__top{
+  background-color:#33adff;
+
+  color: white;}
 
 </style>

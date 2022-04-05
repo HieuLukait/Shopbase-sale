@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout class="body" view="lHh Lpr lFf">
     <Header />
     <q-page-container>
       <router-view />
@@ -77,3 +77,4 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped></style>

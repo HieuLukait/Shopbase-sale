@@ -2,13 +2,14 @@
   <q-header>
     <q-toolbar class="a bg-white text-light-blue-6">
       <q-toolbar-title class="text-h2"> SALE </q-toolbar-title>
-       <q-input
-       color="light-blue-6"
+      <q-input
+        color="light-blue-6"
         v-model="search"
         debounce="500"
         filled
         placeholder="Search"
-      > <template v-slot:append>
+      >
+        <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
@@ -17,12 +18,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      search: "",
+    };
+  },
+};
 </script>
 
 <style>
 .a {
-    height: 90px;
+  height: 90px;
   border-bottom: 1px solid #00bfff;
 }
 </style>

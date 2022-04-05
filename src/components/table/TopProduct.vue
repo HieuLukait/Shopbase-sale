@@ -1,16 +1,34 @@
 <template>
   <div class="q-pa-md">
     <div id="q-app">
-      <div class="q-pa-md topProduct ">
+      <div class="q-pa-md topProduct">
         <q-table
-         title="TOP PRODUCT"
-        v-model:expanded="expanded"
+          class="recipe-units-table"
+          title="TOP PRODUCT"
+          v-model:expanded="expanded"
           :rows="rows"
           :columns="columns"
           row-key="name"
           hide-header
           hide-bottom
-        ></q-table>
+        >
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                <span v-if="col.name != 'product_image'"> {{ col.value }}</span>
+
+                <q-avatar
+                  v-if="col.name == 'product_image'"
+                  size="65px"
+                  class="shadow-10"
+                  square
+                >
+                  <img :src="props.row.product_image" />
+                </q-avatar>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
       </div>
     </div>
   </div>
@@ -28,6 +46,11 @@ const columns = [
     sortable: true,
   },
   {
+    name: "product_image",
+    label: "Product image",
+    align: "left",
+  },
+  {
     name: "title",
     required: true,
     label: "Title",
@@ -41,25 +64,20 @@ const columns = [
 const rows = [
   {
     name: "#1",
-    title:"Ice cream sandwich"
+    product_image: "",
+    title: "Ice cream sandwich",
   },
   {
     name: "#2",
-    title:"Ice cream sandwich"
+    product_image: "",
+    title: "Ice cream sandwich",
   },
   {
     name: "#3",
-    title:"Ice cream sandwich"
+    product_image: "",
+    title: "Ice cream sandwich",
   },
-  {
-    name: "#4",
-    title:"Ice cream sandwich"
-  },
-  {
-    name: "#5",
-    title:"Ice cream sandwich"
-  },
-  ]
+];
 
 export default {
   setup() {
@@ -71,8 +89,13 @@ export default {
 };
 </script>
 
-<style>
-.topProduct{
-    width: 520px;
+<style scoped>
+.topProduct {
+  width: 700px;
+}
+.recipe-units-table >>> .q-table__top {
+  background-color: #33adff;
+
+  color: white;
 }
 </style>
