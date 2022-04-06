@@ -64,18 +64,20 @@ const columns = [
 const rows = [
   {
     name: "#1",
-    product_image: "",
-    title: "Ice cream sandwich",
+    product_image:
+      "https://hanoicomputercdn.com/media/product/47571_rog_strix_x570_e_gaming_aura_sync_01.png",
+    title: "Mainboard ASUS ROG STRIX X570-E GAMING	",
   },
   {
     name: "#2",
-    product_image: "",
-    title: "Ice cream sandwich",
+    product_image: "https://anphat.com.vn/media/product/36985_h732__10_.png",
+    title: "VGA ASUS ROG Strix Radeon RX 6700 XT OC 12GB	",
   },
   {
     name: "#3",
-    product_image: "",
-    title: "Ice cream sandwich",
+    product_image:
+      "https://hanoicomputercdn.com/media/product/60263_ram_desktop_gskill_trident_z_royal_elite_f4_4000c16d_32gteg_32gb_2x16gb_ddr4_4000mhz_1.jpg",
+    title: "	Ram Desktop Gskill Trident Z Royal Elite",
   },
 ];
 
