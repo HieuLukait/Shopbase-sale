@@ -10,7 +10,22 @@
           row-key="name"
           hide-header
           hide-bottom
-        ></q-table>
+        >
+         <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td v-for="col in props.cols" :key="col.name" :props="props">
+            <span v-if="col.name == 'domain'"></span>
+            <span v-else-if="col.name != 'product_image'">
+              {{ col.value }}</span
+            >
+            <span v-if="col.name == 'domain'">
+              <a style="text-decoration: none; color: black" :href="`${col.value}`">{{
+                col.value
+              }}</a>
+            </span>
+          </q-td>
+        </q-tr>
+      </template></q-table>
       </div>
     </div>
   </div>

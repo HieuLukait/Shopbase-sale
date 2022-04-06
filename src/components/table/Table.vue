@@ -23,29 +23,39 @@
         <q-tr :props="props">
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
             <span v-if="col.name == 'domain'"></span>
-            <span v-else-if="col.name != 'product_image'"> {{ col.value }}</span>
+            <span v-else-if="col.name != 'product_image'">
+              {{ col.value }}</span
+            >
             <q-avatar
               v-if="col.name == 'product_image'"
               size="100px"
               class="shadow-10"
               square
+              @click="
+                selectedImage = props.row.product_image;
+                dialog = true;
+              "
             >
               <img :src="props.row.product_image" />
             </q-avatar>
-
             <span v-if="col.name == 'domain'">
-              <a style="text-decoration: none;" :href="`${col.value}`">{{ col.value }}</a>
+              <a
+                style="text-decoration: none; color: #000000 "
+                :href="`${col.value}`"
+                >{{ col.value }}</a
+              >
             </span>
-
-            <!-- <div v-else-if="col.field === 'domain'">
-              <router-link style="text-decoration: none">
-                {{ col.value }}
-              </router-link>
-            </div> -->
           </q-td>
         </q-tr>
       </template>
     </q-table>
+    <q-dialog
+      v-model="dialog"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <img :src="selectedImage" />
+    </q-dialog>
     <div class="q-pa-lg flex flex-center">
       <q-pagination v-model="current" :max="5" />
     </div>
@@ -59,13 +69,11 @@ const columns = [
     required: true,
     label: "Product image",
     align: "left",
-    field: (row) => row.product_image,
-    format: (val) => `${val}`,
   },
   {
     name: "domain",
     align: "left",
-    label: "domain",
+    label: "Domain",
     field: "domain",
     sortable: true,
     //   format: (val) => `${val}`,
@@ -172,8 +180,10 @@ export default {
   },
   data() {
     return {
+      selectedImage: "",
       filter: "",
       current: "",
+      dialog: "false",
     };
   },
 };

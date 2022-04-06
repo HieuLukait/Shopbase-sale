@@ -1,13 +1,9 @@
 <template>
   <q-page-container>
     <div class="flex justify-center">
-      <div>
         <TopSale />
-      </div>
-      <div>
         <TopProduct />
       </div>
-    </div>
     <FilterDate />
     <FilterCountry />
     <Table />
