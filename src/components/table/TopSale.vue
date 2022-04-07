@@ -2,30 +2,35 @@
   <div class="q-pa-md">
     <div id="q-app">
       <div class="topSale q-pa-md">
-        <q-table
-        class="recipe-units-table"
-        title="TOP DOMAIN"
+       <q-scroll-area
+            style="height: 250px; max-width: 650px; border:1px solid #33adff; border-radius: 5px;"
+          ><q-table
+          class="recipe-units-table"
+          title="TOP DOMAIN"
           :rows="rows"
           :columns="columns"
           row-key="name"
           hide-header
           hide-bottom
-        >
-         <template v-slot:body="props">
-        <q-tr :props="props">
-          <q-td v-for="col in props.cols" :key="col.name" :props="props">
-            <span v-if="col.name == 'domain'"></span>
-            <span v-else-if="col.name != 'product_image'">
-              {{ col.value }}</span
-            >
-            <span v-if="col.name == 'domain'">
-              <a style="text-decoration: none; color: black" :href="`${col.value}`">{{
-                col.value
-              }}</a>
-            </span>
-          </q-td>
-        </q-tr>
-      </template></q-table>
+          >
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                <span v-if="col.name == 'domain'"></span>
+                <span v-else-if="col.name != 'product_image'">
+                  {{ col.value }}</span
+                >
+                <span v-if="col.name == 'domain'">
+                  <a
+                    style="text-decoration: none; color: black"
+                    :href="`${col.value}`"
+                    >{{ col.value }}</a
+                  >
+                </span>
+              </q-td>
+            </q-tr>
+          </template></q-table
+        ></q-scroll-area>
       </div>
     </div>
   </div>
@@ -55,29 +60,23 @@ const rows = [
   {
     name: "#1",
     domain: "https://www.hanoicomputer.vn/",
-
   },
   {
     name: "#2",
     domain: "https://www.anphatpc.com.vn/",
-
   },
   {
     name: "#3",
     domain: "https://memoryzone.com.vn/",
-
   },
   {
     name: "#4",
     domain: "	https://thanhcongcomputer.vn/",
-
   },
   {
     name: "#5",
     domain: "https://laptopk1.vn/",
-
   },
-  
 ];
 
 export default {
@@ -91,12 +90,12 @@ export default {
 </script>
 
 <style scoped>
-.topSale{
-    width:650px;
+.topSale {
+  width: 650px;
 }
-.recipe-units-table >>> .q-table__top{
-  background-color:#33adff;
+.recipe-units-table >>> .q-table__top {
+  background-color: #33adff;
 
-  color: white;}
-
+  color: white;
+}
 </style>
