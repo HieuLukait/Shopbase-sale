@@ -11,6 +11,7 @@
       :loading="loading"
       @request="onRequest"
       binary-state-sort
+       hide-bottom
     >
       <template v-slot:top-right>
         <q-input dense debounce="400" v-model="filter" placeholder="Search">
