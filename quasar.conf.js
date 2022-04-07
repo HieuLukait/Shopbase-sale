@@ -68,6 +68,10 @@ module.exports = configure(function (ctx) {
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js", "vue"] }]);
       },
+      env: {
+        API: process.env.API || 'http://127.0.0.1:8000',
+        STRIPE_KEY: process.env.STRIPE_KEY,
+      },
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer

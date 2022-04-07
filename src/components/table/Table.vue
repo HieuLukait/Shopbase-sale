@@ -4,7 +4,7 @@
       class="recipe-units-table my-sticky-header-table"
       title-class="table-title"
       title="Sales"
-      :rows="rows"
+      :rows="sales"
       :columns="columns"
       row-key="name"
       :filter="filter"
@@ -40,7 +40,7 @@
             </q-avatar>
             <span v-if="col.name == 'domain'">
               <a
-                style="text-decoration: none; color: #000000 "
+                style="text-decoration: none; color: #000000"
                 :href="`${col.value}`"
                 >{{ col.value }}</a
               >
@@ -57,7 +57,16 @@
       <img :src="selectedImage" />
     </q-dialog>
     <div class="q-pa-lg flex flex-center">
-      <q-pagination v-model="current" :max="5" />
+      <q-pagination
+        v-if="sales"
+        v-model="page"
+        :max-pages="5"
+        :max="maxPage"
+        :ellipses="false"
+        :boundary-numbers="false"
+        direction-links
+        unelevated
+      />
     </div>
   </div>
 </template>
@@ -85,9 +94,9 @@ const columns = [
     field: "product_title",
   },
   {
-    name: "oder_created_at",
-    label: "Oder created at",
-    field: "oder_created_at",
+    name: "order_created_at",
+    label: "Order created at",
+    field: "order_created_at",
     align: "right",
     sortable: true,
     sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
@@ -106,85 +115,49 @@ const columns = [
   },
 ];
 
-const rows = [
-  {
-    product_image:
-      "https://hanoicomputercdn.com/media/product/47571_rog_strix_x570_e_gaming_aura_sync_01.png",
-    domain: "https://www.hanoicomputer.vn/",
-    product_title: "Mainboard ASUS ROG STRIX X570-E GAMING",
-    oder_created_at: "12/03/2022",
-    city: "Ha Noi",
-    country: "Viet Nam",
-  },
-  {
-    product_image: "https://anphat.com.vn/media/product/35028_i3_10th.jpg",
-    domain: "https://www.anphatpc.com.vn/",
-    product_title: "CPU Intel Core i3-10100F",
-    oder_created_at: "10/01/2022",
-    city: "Da Nang",
-    country: "Viet Nam",
-  },
-  {
-    product_image:
-      "https://hanoicomputercdn.com/media/product/60263_ram_desktop_gskill_trident_z_royal_elite_f4_4000c16d_32gteg_32gb_2x16gb_ddr4_4000mhz_1.jpg",
-    domain: "https://www.hanoicomputer.vn/",
-    product_title: "Ram Desktop Gskill Trident Z Royal Elite ",
-    oder_created_at: "12/03/2022",
-    city: "Ha Noi",
-    country: "Viet Nam",
-  },
-  {
-    product_image:
-      "https://anphat.com.vn/media/product/22502_ssd_kingston_a400_240gb_1.jpg",
-    domain: "https://memoryzone.com.vn/",
-    product_title: "SSD Kingston A400 2.5-Inch SATA III 120GB SA400S37/120G",
-    oder_created_at: "12/03/2022",
-    city: "Ho Chi Minh",
-    country: "Viet Nam",
-  },
-  {
-    product_image: "https://anphat.com.vn/media/product/36985_h732__10_.png",
-    domain: "https://www.anphatpc.com.vn/",
-    product_title:
-      "VGA ASUS ROG Strix Radeon RX 6700 XT OC 12GB (ROG-STRIX-RX6700XT-O12G-GAMING)",
-    oder_created_at: "12/03/2022",
-    city: "Bangkok",
-    country: "Thailand",
-  },
-  {
-    product_image:
-      "https://thanhcongcomputer.vn/wp-content/uploads/2019/12/may-tinh-choi-game-gia-re-510x510.jpg",
-    domain: "https://thanhcongcomputer.vn/",
-    product_title:
-      "VGA ASUS ROG Strix Radeon RX Bộ Máy Tính CPU CORE I5 9400F,RAM 16GB,VGA GTX 1060 6GB, MAINBOARD B360 XT OC 12GB ",
-    oder_created_at: "12/03/2022",
-    city: "Seoul",
-    country: "Korean",
-  },
-  {
-    product_image:
-      "https://product.hstatic.net/1000345160/product/nitro_5_2019__5e68daa8483c4e47a13a2977d2307f39_master.jpg",
-    domain: "https://laptopk1.vn/",
-    product_title: "VGA ASUS ROG Strix Radeon RX 6700 XT OC 12GB",
-    oder_created_at: "12/03/2022",
-    city: "Tokio",
-    country: "Japan",
-  },
-];
+const rows = [];
 export default {
-  setup() {
+  data() {
     return {
       columns,
       rows,
-    };
-  },
-  data() {
-    return {
       selectedImage: "",
       filter: "",
       current: "",
       dialog: "false",
+      sales: [],
+      maxPage: null,
+      page: 1,
     };
+  },
+  mounted() {
+    this.getSales();
+  },
+  methods: {
+    getSales() {
+      this.$myApi.sale
+        // eslint-disable-next-line no-undef
+        .getSales(this.page)
+        .then((res) => {
+          this.sales = res.data.data;
+          this.maxPage = res.data.meta.last_page;
+        })
+        .catch((err) => {
+          Object.keys(err.response.data.errors).forEach((key) => {
+            err.response.data.errors[key].forEach((msg) => {
+              this.$notify.create({
+                message: msg,
+                color: "negative",
+              });
+            });
+          });
+        });
+    },
+  },
+  watch: {
+    page(newVal) {
+      this.getSales(newVal);
+    },
   },
 };
 </script>
