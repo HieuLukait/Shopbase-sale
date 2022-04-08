@@ -1,5 +1,75 @@
 <template>
   <div class="q-pa-md">
+    <div class="flex justify">
+      <div class="text-filter flex justify">
+        Oder created at &nbsp;&nbsp;&nbsp;
+        <q-input
+          filled
+          v-model="startAt"
+          mask="date"
+          :rules="['date']"
+          style="max-width: 200px"
+        >
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy
+                ref="qDateProxy"
+                cover
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date v-model="startAt">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </div>
+      &nbsp;&nbsp;&nbsp;
+      <div class="text-filter flex justify">
+        To &nbsp;&nbsp;&nbsp;
+        <q-input
+          filled
+          v-model="endAt"
+          mask="date"
+          :rules="['date']"
+          style="max-width: 200px"
+        >
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy
+                ref="qDateProxy"
+                cover
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date v-model="endAt">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </div>
+    </div>
+    <div class="q-pa-md">
+      <div class="q-gutter-md row items-start">
+        <div class="text-filter flex justify" style="padding-left: 37px">
+          Country &nbsp;&nbsp;&nbsp;
+          <q-select
+            filled
+            v-model="country"
+            :options="countries"
+            style="width: 200px"
+          />
+        </div>
+      </div>
+    </div>
     <q-table
       class="recipe-units-table my-sticky-header-table"
       title-class="table-title"
@@ -11,12 +81,18 @@
       :loading="loading"
       @request="onRequest"
       binary-state-sort
-       hide-bottom
+      hide-bottom
     >
       <template v-slot:top-right>
-        <q-input dense debounce="400" v-model="filter" placeholder="Search">
+        <q-input
+          dense
+          debounce="400"
+          v-model="country"
+          placeholder="Search"
+          @keyup.enter="getSales(country)"
+        >
           <template v-slot:append>
-            <q-icon name="search" />
+            <q-icon name="search" @click="getSales(country)" />
           </template>
         </q-input>
       </template>
@@ -120,28 +196,55 @@ const rows = [];
 export default {
   data() {
     return {
+      options: ["Google", "Facebook", "Twitter", "Apple", "Oracle"],
+      single: "",
+      date1: "",
+      date2: "",
       columns,
       rows,
       selectedImage: "",
       filter: "",
-      current: "",
+      country: null,
       dialog: "false",
       sales: [],
       maxPage: null,
       page: 1,
+      startAt: "",
+      endAt: "",
+      countries: [],
     };
   },
   mounted() {
     this.getSales();
+    this.getCountry();
   },
   methods: {
     getSales() {
       this.$myApi.sale
         // eslint-disable-next-line no-undef
-        .getSales(this.page)
+        .getSales(this.page, this.country, this.startAt, this.endAt)
         .then((res) => {
           this.sales = res.data.data;
           this.maxPage = res.data.meta.last_page;
+          console.log(this.sales.country);
+        })
+        .catch((err) => {
+          Object.keys(err.response.data.errors).forEach((key) => {
+            err.response.data.errors[key].forEach((msg) => {
+              this.$notify.create({
+                message: msg,
+                color: "negative",
+              });
+            });
+          });
+        });
+    },
+    getCountry() {
+      this.$myApi.sale
+        // eslint-disable-next-line no-undef
+        .getCountry()
+        .then((res) => {
+          this.countries = res.data;
         })
         .catch((err) => {
           Object.keys(err.response.data.errors).forEach((key) => {
@@ -159,6 +262,15 @@ export default {
     page(newVal) {
       this.getSales(newVal);
     },
+    startAt(newVal) {
+      this.getSales(newVal);
+    },
+    endAt(newVal) {
+      this.getSales(newVal);
+    },
+    country(newVal) {
+      this.getSales(newVal);
+    },
   },
 };
 </script>
@@ -168,5 +280,9 @@ export default {
   background-color: #33adff;
 
   color: white;
+}
+.text-filter {
+  align-items: center;
+  font-size: 16px;
 }
 </style>

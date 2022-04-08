@@ -4,8 +4,6 @@
         <TopSale />
         <TopProduct />
       </div>
-    <FilterDate />
-    <FilterCountry />
     <Table />
     <router-view />
   </q-page-container>
@@ -14,15 +12,12 @@
 import Table from "components/table/Table.vue";
 import TopSale from "components/table/TopSale.vue";
 import TopProduct from "components/table/TopProduct.vue";
-import FilterDate from "components/FilterDate.vue";
-import FilterCountry from "components/FilterCountry.vue";
 export default {
   components: {
     Table,
-    FilterDate,
     TopSale,
     TopProduct,
-    FilterCountry,
+
   },
 };
 </script>

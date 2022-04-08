@@ -2,35 +2,24 @@
   <div class="q-pa-md">
     <div id="q-app">
       <div class="q-pa-md topProduct">
-        <q-scroll-area  style="height: 250px; max-width: 650px; border:1px solid #33adff; border-radius: 5px;">
+        <q-scroll-area
+          style="
+            height: 250px;
+            max-width: 650px;
+            border: 1px solid #33adff;
+            border-radius: 5px;
+          "
+        >
           <q-table
             class="recipe-units-table"
             title="TOP PRODUCT"
             v-model:expanded="expanded"
-            :rows="rows"
+            :rows="product"
             :columns="columns"
             row-key="name"
             hide-header
             hide-bottom
           >
-            <template v-slot:body="props">
-              <q-tr :props="props">
-                <q-td v-for="col in props.cols" :key="col.name" :props="props">
-                  <span v-if="col.name != 'product_image'">
-                    {{ col.value }}</span
-                  >
-
-                  <q-avatar
-                    v-if="col.name == 'product_image'"
-                    size="65px"
-                    class="shadow-10"
-                    square
-                  >
-                    <img :src="props.row.product_image" />
-                  </q-avatar>
-                </q-td>
-              </q-tr>
-            </template>
           </q-table>
         </q-scroll-area>
       </div>
@@ -41,56 +30,52 @@
 <script>
 const columns = [
   {
-    name: "name",
+    name: "product_title",
     required: true,
-    label: "#1",
+    label: "Title",
     align: "left",
-    field: (row) => row.name,
-    format: (val) => `${val}`,
-    sortable: true,
+    field: "product_title",
   },
   {
     name: "product_image",
     label: "Product image",
     align: "left",
-  },
-  {
-    name: "title",
-    required: true,
-    label: "Title",
-    align: "left",
-    field: (row) => row.title,
-    format: (val) => `${val}`,
-    sortable: true,
+    field: "count",
   },
 ];
 
-const rows = [
-  {
-    name: "#1",
-    product_image:
-      "https://hanoicomputercdn.com/media/product/47571_rog_strix_x570_e_gaming_aura_sync_01.png",
-    title: "Mainboard ASUS ROG STRIX X570-E GAMING	",
-  },
-  {
-    name: "#2",
-    product_image: "https://anphat.com.vn/media/product/36985_h732__10_.png",
-    title: "VGA ASUS ROG Strix Radeon RX 6700 XT OC 12GB	",
-  },
-  {
-    name: "#3",
-    product_image:
-      "https://hanoicomputercdn.com/media/product/60263_ram_desktop_gskill_trident_z_royal_elite_f4_4000c16d_32gteg_32gb_2x16gb_ddr4_4000mhz_1.jpg",
-    title: "	Ram Desktop Gskill Trident Z Royal Elite",
-  },
-];
+const rows = [];
 
 export default {
   setup() {
     return {
       columns,
       rows,
+      product: [],
     };
+  },
+  mounted() {
+    this.getProduct();
+  },
+  methods: {
+    getProduct() {
+      this.$myApi.sale
+        .getProduct()
+        .then((res) => {
+          this.product = res.data;
+          console.log(this.product);
+        })
+        .catch((err) => {
+          Object.keys(err.response.data.errors).forEach((key) => {
+            err.response.data.errors[key].forEach((msg) => {
+              this.$notify.create({
+                message: msg,
+                color: "negative",
+              });
+            });
+          });
+        });
+    },
   },
 };
 </script>
@@ -103,5 +88,10 @@ export default {
   background-color: #33adff;
 
   color: white;
+}
+.recipe-units-table {
+  height: 250px;
+  max-width: 650px;
+  border-radius: 5px;
 }
 </style>
