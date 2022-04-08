@@ -9,9 +9,7 @@
         filled
         placeholder="Search"
       >
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
+        
       </q-input>
     </q-toolbar>
   </q-header>
