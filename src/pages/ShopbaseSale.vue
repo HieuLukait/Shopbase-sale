@@ -1,6 +1,6 @@
 <template>
   <q-page-container>
-    <div class="flex justify-center">
+    <div class="flex justify-center" >
         <TopSale />
         <TopProduct />
       </div>
