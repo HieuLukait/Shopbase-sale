@@ -4,7 +4,7 @@
       <div class="q-pa-md topProduct">
         <q-scroll-area
           style="
-            height: 250px;
+            height: 300px;
             max-width: 650px;
             border: 1px solid #33adff;
             border-radius: 5px;
@@ -18,8 +18,22 @@
             :columns="columns"
             row-key="name"
             hide-header
-            hide-bottom
+           
           >
+          <template v-slot:body="props">
+              <q-tr :props="props">
+                <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                  <span v-if="col.name != 'product_title'">{{col.value}}</span>
+                  <span v-if="col.name == 'product_title'">
+                    <a
+                      style="text-decoration: none; color: black"
+                      :href="`${props.row.domain}/${props.row.product_handle}`"
+                      >{{ col.value }}</a
+                    >
+                  </span>
+                </q-td>
+              </q-tr>
+            </template>
           </q-table>
         </q-scroll-area>
       </div>
@@ -63,7 +77,6 @@ export default {
         .getProduct()
         .then((res) => {
           this.product = res.data;
-          console.log(this.product);
         })
         .catch((err) => {
           Object.keys(err.response.data.errors).forEach((key) => {
@@ -90,7 +103,7 @@ export default {
   color: white;
 }
 .recipe-units-table {
-  height: 250px;
+  height: 300px;
   max-width: 650px;
   border-radius: 5px;
 }

@@ -81,7 +81,6 @@
       :loading="loading"
       @request="onRequest"
       binary-state-sort
-      hide-bottom
     >
       <template v-slot:top-right>
         <q-input
@@ -100,6 +99,15 @@
         <q-tr :props="props">
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
             <span v-if="col.name == 'domain'"></span>
+            <span v-else-if="col.name == 'product_title'"
+              ><a
+                style="text-decoration: none; color: #000000"
+                :href="`${props.row.domain}/${props.row.product_handle}`"
+              >
+                {{ col.value }}
+              </a></span
+            >
+
             <span v-else-if="col.name != 'product_image'">
               {{ col.value }}</span
             >
@@ -161,7 +169,7 @@ const columns = [
     align: "left",
     label: "Domain",
     field: "domain",
-    sortable: true,
+
     //   format: (val) => `${val}`,
   },
   {
@@ -196,10 +204,6 @@ const rows = [];
 export default {
   data() {
     return {
-      options: ["Google", "Facebook", "Twitter", "Apple", "Oracle"],
-      single: "",
-      date1: "",
-      date2: "",
       columns,
       rows,
       selectedImage: "",
@@ -226,7 +230,6 @@ export default {
         .then((res) => {
           this.sales = res.data.data;
           this.maxPage = res.data.meta.last_page;
-          console.log(this.sales.country);
         })
         .catch((err) => {
           Object.keys(err.response.data.errors).forEach((key) => {
