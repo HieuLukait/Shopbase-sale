@@ -4,7 +4,7 @@
       <div class="topSale q-pa-md">
         <q-scroll-area
           style="
-            height: 250px;
+            height: 300px;
             max-width: 650px;
             border: 1px solid #33adff;
             border-radius: 5px;
@@ -16,7 +16,6 @@
             :columns="columns"
             row-key="name"
             hide-header
-            hide-bottom
           >
             <template v-slot:body="props">
               <q-tr :props="props">
@@ -45,12 +44,6 @@
 <script>
 import { ref } from 'vue'
 const columns = [
-  {
-    name: "index",
-    required: true,
-    label: "#",
-    align: "left",
-  },
   {
     name: "domain",
     required: true,
@@ -88,7 +81,7 @@ export default {
       .getTopDomain()
         .then((res) => {
           this.domains = res.data;
-          console.log(this.domains);
+
         })
         .catch((err) => {
           Object.keys(err.response.data.errors).forEach((key) => {
@@ -114,7 +107,7 @@ export default {
   color: white;
 }
 .recipe-units-table{
-          height: 250px;
+          height: 300px;
             max-width: 650px;
             border-radius: 5px;
 }
